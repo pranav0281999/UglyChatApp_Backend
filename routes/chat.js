@@ -10,8 +10,22 @@ var Storage = multer.diskStorage({
 });
 
 var upload = multer({
-    storage: Storage
+    storage: Storage,
+    fileFilter: (req, file, callback) => {
+        checkFileType(file, callback);
+    }
 }).single("image");
+
+checkFileType = (file, callback) => {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+
+    if (extName) {
+        callback(null, true);
+    } else {
+        callback("Error: image only");
+    }
+}
 
 router.route('/image').post((req, res) => {
     upload(req, res, (err) => {
@@ -26,4 +40,4 @@ router.route('/image').post((req, res) => {
     });
 });
 
-module.exports = router;  
+module.exports = router;
