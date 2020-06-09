@@ -5,7 +5,7 @@ const path = require('path');
 var Storage = multer.diskStorage({
     destination: './public/image',
     filename: function (req, file, callback) {
-        callback(null, file.fieldname + Date.now() + path.extname(file.originalname));
+        callback(null, req.headers.filename + path.extname(file.originalname));
     }
 });
 
@@ -28,20 +28,21 @@ checkFileType = (file, callback) => {
 }
 
 router.route('/image').post((req, res) => {
+    console.log(req.headers);
+
     upload(req, res, (err) => {
         if (err) {
             res.status(400).json({
                 msg: err
             })
         } else {
-            console.log(req.file);
             res.status(200).json({ msg: "image uploaded" })
         }
     });
 });
 
 router.route('/image').get((req, res) => {
-    res.sendFile(path.join(__dirname, "../public/image/image1591724450102.jpg"));
+    res.sendFile(path.join(__dirname, "../public/image/" + req.query.filename));
 });
 
 module.exports = router;
