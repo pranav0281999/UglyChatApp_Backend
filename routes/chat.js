@@ -40,4 +40,8 @@ router.route('/image').post((req, res) => {
     });
 });
 
+router.route('/image').get((req, res) => {
+    res.sendFile(path.join(__dirname, "../public/image/image1591724450102.jpg"));
+});
+
 module.exports = router;
