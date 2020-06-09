@@ -2,6 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const chatRouter = require('./routes/chat');
 const app = express();
+const bodyParser = require('body-parser');
+const fs = require('fs');
+
+// create public directories to store user data
+var dir = './public/image';
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
+app.use(bodyParser.json());
+
+app.use(express.static("./public"));
 
 require('dotenv').config();
 
