@@ -28,8 +28,6 @@ checkImageFileType = (file, callback) => {
 }
 
 router.route('/image').post((req, res) => {
-    console.log(req.headers);
-
     uploadImage(req, res, (err) => {
         if (err) {
             res.status(400).json({
@@ -71,8 +69,6 @@ checkVideoFileType = (file, callback) => {
 }
 
 router.route('/video').post((req, res) => {
-    console.log(req.headers);
-
     uploadVideo(req, res, (err) => {
         if (err) {
             res.status(400).json({
@@ -86,6 +82,47 @@ router.route('/video').post((req, res) => {
 
 router.route('/video').get((req, res) => {
     res.sendFile(path.join(__dirname, "../public/video/" + req.query.filename));
+});
+
+var storageAudio = multer.diskStorage({
+    destination: './public/audio',
+    filename: function (req, file, callback) {
+        callback(null, req.headers.filename + path.extname(file.originalname));
+    }
+});
+
+var uploadAudio = multer({
+    storage: storageAudio,
+    fileFilter: (req, file, callback) => {
+        checkAudioFileType(file, callback);
+    }
+}).single("audio");
+
+checkAudioFileType = (file, callback) => {
+    const fileTypes = /mp3|m4a|flac|mp4|wav|wma|aac|/;
+    const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+
+    if (extName) {
+        callback(null, true);
+    } else {
+        callback("Error: audio only");
+    }
+}
+
+router.route('/audio').post((req, res) => {
+    uploadAudio(req, res, (err) => {
+        if (err) {
+            res.status(400).json({
+                msg: err
+            })
+        } else {
+            res.status(200).json({ msg: "audio uploaded" })
+        }
+    });
+});
+
+router.route('/audio').get((req, res) => {
+    res.sendFile(path.join(__dirname, "../public/audio/" + req.query.filename));
 });
 
 module.exports = router;
