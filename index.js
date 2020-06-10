@@ -6,10 +6,12 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 
 // create public directories to store user data
-var dir = './public/image';
-if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
-}
+var dirs = ['./public/image', './public/video', './public/audio', './public/other'];
+dirs.forEach(dir => {
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+});
 
 app.use(bodyParser.json());
 
