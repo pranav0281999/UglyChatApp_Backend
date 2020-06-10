@@ -125,4 +125,31 @@ router.route('/audio').get((req, res) => {
     res.sendFile(path.join(__dirname, "../public/audio/" + req.query.filename));
 });
 
+var storageOther = multer.diskStorage({
+    destination: './public/other',
+    filename: function (req, file, callback) {
+        callback(null, req.headers.filename + path.extname(file.originalname));
+    }
+});
+
+var uploadOther = multer({
+    storage: storageOther
+}).single("other");
+
+router.route('/other').post((req, res) => {
+    uploadOther(req, res, (err) => {
+        if (err) {
+            res.status(400).json({
+                msg: err
+            })
+        } else {
+            res.status(200).json({ msg: "other uploaded" })
+        }
+    });
+});
+
+router.route('/other').get((req, res) => {
+    res.sendFile(path.join(__dirname, "../public/other/" + req.query.filename));
+});
+
 module.exports = router;
