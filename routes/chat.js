@@ -2,21 +2,21 @@ const router = require('express').Router();
 const multer = require('multer');
 const path = require('path');
 
-var Storage = multer.diskStorage({
+var storageImage = multer.diskStorage({
     destination: './public/image',
     filename: function (req, file, callback) {
         callback(null, req.headers.filename + path.extname(file.originalname));
     }
 });
 
-var upload = multer({
-    storage: Storage,
+var uploadImage = multer({
+    storage: storageImage,
     fileFilter: (req, file, callback) => {
-        checkFileType(file, callback);
+        checkImageFileType(file, callback);
     }
 }).single("image");
 
-checkFileType = (file, callback) => {
+checkImageFileType = (file, callback) => {
     const fileTypes = /jpeg|jpg|png|gif/;
     const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
 
@@ -30,7 +30,7 @@ checkFileType = (file, callback) => {
 router.route('/image').post((req, res) => {
     console.log(req.headers);
 
-    upload(req, res, (err) => {
+    uploadImage(req, res, (err) => {
         if (err) {
             res.status(400).json({
                 msg: err
