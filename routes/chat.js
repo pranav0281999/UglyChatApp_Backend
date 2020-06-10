@@ -58,7 +58,7 @@ var uploadVideo = multer({
 }).single("video");
 
 checkVideoFileType = (file, callback) => {
-    const fileTypes = /mov|mpeg4|mp4|avi|wmv|flv|mpegps|webm|/;
+    const fileTypes = /mov|mpeg4|mp4|avi|wmv|flv|mpegps|webm/;
     const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
 
     if (extName) {
@@ -99,7 +99,7 @@ var uploadAudio = multer({
 }).single("audio");
 
 checkAudioFileType = (file, callback) => {
-    const fileTypes = /mp3|m4a|flac|mp4|wav|wma|aac|/;
+    const fileTypes = /mp3|m4a|flac|mp4|wav|wma|aac/;
     const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
 
     if (extName) {
