@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const chatRouter = require('./routes/chat');
+const usersRouter = require('./routes/users');
 const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
@@ -24,6 +25,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use('/chat', chatRouter);
+app.use('/users', usersRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
