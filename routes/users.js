@@ -11,10 +11,9 @@ var connection = mysql.createConnection({
     port: process.env.SQL_PORT
 });
 
+connection.connect();
+
 router.route('/allUsers').get((req, res) => {
-
-    connection.connect();
-
     connection.query('SELECT username FROM ' + process.env.SQL_DB_NAME + '.ofUser WHERE username!="admin";', function (err, results, fields) {
         if (err) {
             res.status(500).json({ msg: "server error" });
@@ -28,8 +27,6 @@ router.route('/allUsers').get((req, res) => {
             res.status(200).json({ userList: response })
         };
     });
-
-    connection.end();
 });
 
 module.exports = router;

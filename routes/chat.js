@@ -99,7 +99,7 @@ var uploadAudio = multer({
 }).single("audio");
 
 checkAudioFileType = (file, callback) => {
-    const fileTypes = /mp3|m4a|flac|mp4|wav|wma|aac/;
+    const fileTypes = /mp3|m4a|flac|mp4|wav|wma|aac|ogg/;
     const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
 
     if (extName) {
